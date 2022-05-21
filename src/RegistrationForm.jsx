@@ -13,6 +13,7 @@ export const RegistrationForm = ({ setMembers, members }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isDirty },
     watch,
   } = useForm({
@@ -20,8 +21,43 @@ export const RegistrationForm = ({ setMembers, members }) => {
   });
 
   const onSubmit = async (data) => {
-    console.log({ data });
-    setMembers([...members, data]);
+    setMembers([
+      ...members,
+      {
+        ...data,
+        potentialEarning: calcPotentialEarning(
+          data?.savingsTier,
+          data?.contributionAmount
+        ),
+      },
+    ]);
+    reset();
+  };
+
+  const interest = (amount, percentage) => {
+    return (percentage / 100) * amount;
+  };
+
+  const calcPotentialEarning = (tier, amount) => {
+    let earning = 0;
+
+    switch (tier) {
+      case "Tier 1":
+        earning = parseFloat(amount) + interest(amount, 7);
+        break;
+
+      case "Tier 2":
+        earning = parseFloat(amount) + interest(amount, 12);
+        break;
+
+      case "Tier 3":
+        earning = parseFloat(amount) + interest(amount, 25);
+        break;
+
+      default:
+        earning = 0;
+    }
+    return earning;
   };
 
   const currentValues = watch();
@@ -130,7 +166,12 @@ export const RegistrationForm = ({ setMembers, members }) => {
             </div>
             <div className="flex justify-between">
               <div className="font-bold">Potential Earning</div>
-              <div>{currentValues?.name}</div>
+              <div>
+                {calcPotentialEarning(
+                  currentValues.savingsTier,
+                  currentValues.contributionAmount
+                )}
+              </div>
             </div>
           </div>
         )}
