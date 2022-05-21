@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -9,7 +9,14 @@ const schema = yup.object().shape({
   contributionAmount: yup.string().required("Contribution amount is required"),
 });
 
+const tierLimits = {
+  "Tier 1": 10000,
+  "Tier 2": 20000,
+  "Tier 3": 30000,
+};
+
 export const RegistrationForm = ({ setMembers, members }) => {
+  const [amtValidationErr, setAmtValidationError] = useState("");
   const {
     register,
     handleSubmit,
@@ -21,17 +28,30 @@ export const RegistrationForm = ({ setMembers, members }) => {
   });
 
   const onSubmit = async (data) => {
-    setMembers([
-      ...members,
-      {
-        ...data,
-        potentialEarning: calcPotentialEarning(
-          data?.savingsTier,
-          data?.contributionAmount
-        ),
-      },
-    ]);
-    reset();
+    if (validateAmount(data?.contributionAmount, data.savingsTier)) {
+      setMembers([
+        ...members,
+        {
+          ...data,
+          potentialEarning: calcPotentialEarning(
+            data?.savingsTier,
+            data?.contributionAmount
+          ),
+        },
+      ]);
+      reset();
+      setAmtValidationError("");
+    } else {
+      setAmtValidationError(
+        `You cannot save more than ${tierLimits[data?.savingsTier]} for ${
+          data?.savingsTier
+        }`
+      );
+    }
+  };
+
+  const validateAmount = (amount, tier) => {
+    return amount <= tierLimits[tier];
   };
 
   const interest = (amount, percentage) => {
@@ -147,11 +167,14 @@ export const RegistrationForm = ({ setMembers, members }) => {
                 Save
               </button>
             </div>
+            {amtValidationErr && (
+              <p className="text-xs p-4 text-red-600">{amtValidationErr}</p>
+            )}
           </div>
         </div>
         {isDirty && (
           <div className="mt-5 md:mt-0 col-span-1 p-6">
-            <h3>Savings Preview</h3>
+            <h3 className="text-center mb-4 text-2xl">Savings Preview</h3>
             <div className="flex justify-between">
               <div className="font-bold">Name</div>
               <div>{currentValues?.fullName}</div>
@@ -167,10 +190,11 @@ export const RegistrationForm = ({ setMembers, members }) => {
             <div className="flex justify-between">
               <div className="font-bold">Potential Earning</div>
               <div>
-                {calcPotentialEarning(
-                  currentValues.savingsTier,
-                  currentValues.contributionAmount
-                )}
+                {currentValues.contributionAmount &&
+                  calcPotentialEarning(
+                    currentValues.savingsTier,
+                    currentValues.contributionAmount
+                  )}
               </div>
             </div>
           </div>

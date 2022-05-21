@@ -1,14 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./index.css";
 import { MembersTable } from "./MembersTable";
 import { RegistrationForm } from "./RegistrationForm";
 
 function App() {
   const [members, setMembers] = useState([]);
-
-  useEffect(() => {
-    console.log({ members });
-  }, [members]);
 
   return (
     <>
