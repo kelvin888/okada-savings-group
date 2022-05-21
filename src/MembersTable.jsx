@@ -5,10 +5,10 @@ export const MembersTable = ({ members }) => {
     <table className="table-auto w-full mt-12">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Tier</th>
-          <th>Amount</th>
-          <th>Potential Earning</th>
+          <td className="font-bold">Name</td>
+          <td className="font-bold">Tier</td>
+          <td className="font-bold">Amount</td>
+          <td className="font-bold">Potential Earning</td>
         </tr>
       </thead>
       <tbody>
