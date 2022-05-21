@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/okada-savings-group/static/css/main.a656c912.css",
-    "main.js": "/okada-savings-group/static/js/main.a36166c9.js",
+    "main.js": "/okada-savings-group/static/js/main.521afecd.js",
     "static/js/787.bcb2543c.chunk.js": "/okada-savings-group/static/js/787.bcb2543c.chunk.js",
     "index.html": "/okada-savings-group/index.html",
     "main.a656c912.css.map": "/okada-savings-group/static/css/main.a656c912.css.map",
-    "main.a36166c9.js.map": "/okada-savings-group/static/js/main.a36166c9.js.map",
+    "main.521afecd.js.map": "/okada-savings-group/static/js/main.521afecd.js.map",
     "787.bcb2543c.chunk.js.map": "/okada-savings-group/static/js/787.bcb2543c.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.a656c912.css",
-    "static/js/main.a36166c9.js"
+    "static/js/main.521afecd.js"
   ]
 }
